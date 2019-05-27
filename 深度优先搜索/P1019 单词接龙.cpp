@@ -23,29 +23,24 @@ inline int min(int a, int b) {
 void prepare() {
 	for (int i = 0; i < N; i++) {
 		for (int m = 0; m < N; m++) {
-			if (i == m) {
-				connect[i][m] = 0;
-			}
-			else {
-				string& str1 = str[i], & str2 = str[m];
-				int len1 = str1.length(), len2 = str2.length();
-				int minLen = min(len1, len2);
+			string& str1 = str[i], & str2 = str[m];
+			int len1 = str1.length(), len2 = str2.length();
+			int minLen = min(len1, len2);
 
-				for (int q = 1; q <= minLen; q++) {
-					bool OK = true;
+			for (int q = 1; q <= minLen; q++) {
+				bool OK = true;
 
-					for (int p = q - 1, s = 0; p >= 0; p--, s++) {
-						int offset1 = len1 - p - 1, offset2 = s;
-						if (str1[offset1] != str2[offset2]) {
-							OK = false;
-							break;
-						}
-					}
-
-					if (OK) {
-						connect[i][m] = q;
+				for (int p = q - 1, s = 0; p >= 0; p--, s++) {
+					int offset1 = len1 - p - 1, offset2 = s;
+					if (str1[offset1] != str2[offset2]) {
+						OK = false;
 						break;
 					}
+				}
+
+				if (OK) {
+					connect[i][m] = q;
+					break;
 				}
 			}
 		}
@@ -57,7 +52,7 @@ int answer = 0, tempAnswer = 0;
 void dfs(int u) {
 	bool findPath = false;
 	for (int v = 0; v < N; v++) {
-		if (connect[u][v] == str[u].length() || connect[u][v] == str[v].length() || str[u] == str[v]) {
+		if (connect[u][v] == str[u].length() || connect[u][v] == str[v].length()) {
 			continue;
 		}
 		if (!connect[u][v]) {
@@ -96,7 +91,6 @@ int main() {
 			visited[i]--;
 		}
 	}
-
 
 	cout << answer;
 
