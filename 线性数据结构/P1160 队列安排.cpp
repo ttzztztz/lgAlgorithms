@@ -1,5 +1,4 @@
-﻿// luogu-judger-enable-o2
-#include<iostream>
+﻿#include<iostream>
 using namespace std;
 
 int erasedArr[100005];
@@ -69,7 +68,7 @@ void splay(SplayNode* node, SplayNode* target = nullptr) {
 		return;
 	}
 
-	while (node->parent != target) {
+	while (node && node->parent != target) {
 		SplayNode* parent = node->parent;
 		SplayNode* grandparent = grandParent(node);
 		if (grandparent) {
@@ -135,7 +134,7 @@ void insert(int key, int beside, Relation position) {
 		while (curr && curr->children[reversedPosition]) {
 			curr = curr->children[reversedPosition];
 		}
-		newNode = new SplayNode(curr->children[reversedPosition], key);
+		newNode = new SplayNode(curr, key);
 		curr->children[reversedPosition] = newNode;
 	}
 
@@ -152,6 +151,8 @@ int main() {
 		int beside = 0, position = 0;
 		cin >> beside >> position;
 		insert(i, beside, position == 0 ? L : R);
+
+		int q = 0;
 	}
 
 	cin >> M;
