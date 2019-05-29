@@ -152,7 +152,6 @@ int main() {
 		cin >> beside >> position;
 		insert(i, beside, position == 0 ? L : R);
 
-		int q = 0;
 	}
 
 	cin >> M;
