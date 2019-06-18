@@ -1,30 +1,37 @@
 ﻿#include<iostream>
-#include<algorithm>
 using namespace std;
 
 const int MAX = 100005;
-int N, M;
-int arr[MAX];
+int N, M, arr[MAX];
+int minNumber = 2<<31 - 1, maxNumber = 0;
+
+inline int min(int x, int y) {
+	return x < y ? x : y;
+}
 
 inline int max(int x, int y) {
 	return x < y ? y : x;
 }
 
-inline bool judge(int x) {
-	int blocks = 0, currentSum = 0;
+bool judge(int x) {
+	int blocks = 0, sum = 0;
 	for (int i = 1; i <= N;i++) {
-		if (currentSum + arr[i] > x) {
-			currentSum = arr[i];
+		if (sum + arr[i] > x) {
 			blocks++;
+			sum = arr[i];
 		}
 		else {
-			currentSum += arr[i];
+			sum += arr[i];
 		}
 	}
-	return blocks >= M;
+	if (sum > 0) {
+		blocks++;
+	}
+	return blocks > M;
 }
 
-inline int search(int l, int r) {
+int search() {
+	int l = minNumber, r = maxNumber;
 	while (l <= r) {
 		int middle = (l + r) / 2;
 		if (judge(middle)) {
@@ -34,20 +41,17 @@ inline int search(int l, int r) {
 			r = middle - 1;
 		}
 	}
-	return l;
+	return r + 1;
 }
 
 int main() {
-	int l = 0, r = 0;
-
 	cin >> N >> M;
 	for (int i = 1; i <= N;i++) {
 		cin >> arr[i];
-
-		r += arr[i];
-		l = max(arr[i], l);
+		minNumber = max(arr[i], minNumber);
+		maxNumber += arr[i];
 	}
-	
-	cout << search(l, r);
+
+	cout << search();
 	return 0;
 }
