@@ -1,4 +1,5 @@
 ﻿#include<iostream>
+#include<cstring>
 #include<algorithm>
 #include<vector>
 using namespace std;
@@ -123,6 +124,26 @@ BigInt operator*=(BigInt& a, const BigInt& b) {
 	return a = a * b;
 }
 
+BigInt operator/(const BigInt& a, const int b) {
+	BigInt result;
+	result.v.resize(a.v.size());
+
+	int number = 0;
+	for (int i = a.v.size() - 1; i >= 0;i--) {
+		number = number * 10 + a.v[i];
+		result.v[i] = number / b;
+		number %= b;
+	}
+
+	int size = result.v.size();
+	while (size && result.v[size - 1] == 0) {
+		size--;
+	}
+	result.v.resize(size);
+
+	return result;
+}
+
 bool operator<(const BigInt& a, const BigInt& b) {
 	int maxlen_a = a.v.size(), maxlen_b = b.v.size();
 	if (maxlen_b != maxlen_a) {
@@ -152,8 +173,9 @@ bool operator>(const BigInt& a, const BigInt& b) {
 class Person {
 public:
 	BigInt left, right;
-	Person() :left(0), right(0) {};
-	Person(BigInt l, BigInt r) : left(l), right(r) {};
+	int _l, _r;
+	Person() :left(0), right(0), _r(0), _l(0) {};
+	Person(int __l, int __r) : left(__l), right(__r), _r(__r), _l(__l) {};
 };
 
 const int MAX = 1005;
@@ -165,22 +187,22 @@ int main() {
 
 	int kingLeft = 0, kingRight = 0;
 	cin >> kingLeft >> kingRight;
-	
-	for (int i = 0; i < N;i++) {
+
+	for (int i = 0; i < N; i++) {
 		int left = 0, right = 0;
 		cin >> left >> right;
 		person[i] = { left, right };
 	}
 
 	sort(person, person + N, [](const Person& $1, const Person $2)->bool {
-		return $1.left * $1.right < $2.left * $2.right;
+		return $1._l * $1._r < $2._l * $2._r;
 	});
 
 	BigInt left = kingLeft, right = kingRight;
 	BigInt result = 0;
-	for (int i = 0; i < N;i++) {
+	for (int i = 0; i < N; i++) {
 		Person& p = person[i];
-		BigInt reward = left / p.right;
+		BigInt reward = left / p._r;
 		left *= p.left;
 		if (reward > result) {
 			result = reward;
