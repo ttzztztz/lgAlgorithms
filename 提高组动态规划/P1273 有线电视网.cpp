@@ -37,7 +37,7 @@ int DFS(int u) {
             const int v = edge[i].end, cost = edge[i].cost;
             sum += DFS(v);
             for (int j = sum; j >= 1; j--) {
-                for (int k = 0; k <= j; k++) {
+                for (int k = 0; k < j; k++) {
                     dp[u][j] = max(dp[u][j], dp[u][k] + dp[v][j - k] - cost);
                 }
             }
